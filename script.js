@@ -14,13 +14,11 @@ document.addEventListener('mousemove', (e) => {
 const links = document.querySelectorAll('a');
 links.forEach(link => {
     link.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'scale(2)';
-        cursorFollower.style.transform = 'scale(1.5)';
+        link.style.color = 'var(--primary-color)';
     });
     
     link.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'scale(1)';
-        cursorFollower.style.transform = 'scale(1)';
+        link.style.color = 'var(--text-color)';
     });
 });
 

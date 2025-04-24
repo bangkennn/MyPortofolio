@@ -24,39 +24,190 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(10px);
     z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navbar-transparent {
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+}
+
+.navbar-transparent .logo {
+    color: var(--text-color);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.navbar-transparent .nav-links a {
+    color: var(--text-color);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.navbar-transparent .nav-links a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.navbar-visible {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+}
+
+.navbar-visible::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--primary-color),
+        var(--secondary-color),
+        var(--primary-color),
+        transparent
+    );
+    animation: borderGlow 4s linear infinite;
+}
+
+.navbar-visible .logo {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.navbar-visible .nav-links a {
+    color: var(--text-color);
+}
+
+.navbar-visible .nav-links a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 8px var(--primary-color);
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--primary-color);
     text-shadow: 0 0 10px var(--primary-color);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.logo::before {
+    content: attr(data-text);
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background: var(--primary-color);
+    color: var(--background-color);
+    text-shadow: none;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: glitchEffect 3s infinite;
+    opacity: 0;
+}
+
+@keyframes glitchEffect {
+    0%, 100% { opacity: 0; }
+    5%, 8% { opacity: 0.8; }
+    6%, 9% { opacity: 0; }
+    11%, 14% { opacity: 0.8; }
+    12%, 15% { opacity: 0; }
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     list-style: none;
 }
 
 .nav-links a {
     color: var(--text-color);
     text-decoration: none;
-    transition: color 0.3s ease;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+.nav-links a:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -1.5rem;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+.nav-links li:last-child::after {
+    display: none;
+}
+
+/* Scroll Effect untuk Navbar */
+.navbar.scrolled {
+    padding: 1rem 3rem;
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+}
+
+/* Tambahkan script ini ke file JavaScript */
+.navbar.scrolled .logo {
+    font-size: 1.6rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
 }
 
 section {
@@ -85,22 +236,230 @@ section.visible {
     text-align: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #0f0f2d 50%, #1a1a4a 100%);
     padding: 0 20px;
 }
 
-.hero::before {
+/* Efek bintang */
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.stars::before,
+.stars::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: repeat;
+}
+
+.stars::before {
+    background-image: 
+        radial-gradient(1px 1px at 25% 25%, white 1px, transparent 0),
+        radial-gradient(1px 1px at 50% 50%, white 1px, transparent 0),
+        radial-gradient(2px 2px at 75% 75%, white 1px, transparent 0),
+        radial-gradient(2px 2px at 100% 100%, white 1px, transparent 0);
+    background-size: 250px 250px;
+    animation: stars 20s linear infinite;
+    opacity: 0.5;
+}
+
+.stars::after {
+    background-image: 
+        radial-gradient(1.5px 1.5px at 10% 10%, rgba(0, 255, 255, 0.9) 1px, transparent 0),
+        radial-gradient(1.5px 1.5px at 30% 40%, rgba(255, 255, 255, 0.9) 1px, transparent 0),
+        radial-gradient(2.5px 2.5px at 60% 30%, rgba(0, 255, 157, 0.9) 1px, transparent 0),
+        radial-gradient(2.5px 2.5px at 90% 60%, rgba(255, 255, 255, 0.9) 1px, transparent 0);
+    background-size: 300px 300px;
+    animation: stars 30s linear infinite;
+    opacity: 0.4;
+}
+
+/* Nebula effect */
+.nebula {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: 
-        radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
-    animation: pulse 15s infinite alternate;
+        radial-gradient(circle at 20% 20%, rgba(0, 255, 157, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0, 184, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.05) 0%, transparent 60%);
+    filter: blur(20px);
+    animation: nebulaGlow 15s ease-in-out infinite alternate;
+    z-index: 2;
+    opacity: 0.5;
+    mix-blend-mode: screen;
+}
+
+/* Meteor effect */
+.meteor {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #fff;
+    box-shadow: 0 0 4px #fff;
+    border-radius: 50%;
+    animation: meteor linear infinite;
+    opacity: 0;
+}
+
+.meteor::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, #fff, transparent);
+    transform: translateX(-50px) translateY(1px);
+}
+
+.meteor:nth-child(1) {
+    top: 10%;
+    left: 80%;
+    animation-duration: 3s;
+    animation-delay: 1s;
+}
+
+.meteor:nth-child(2) {
+    top: 15%;
+    left: 70%;
+    animation-duration: 4s;
+    animation-delay: 2s;
+}
+
+.meteor:nth-child(3) {
+    top: 20%;
+    left: 90%;
+    animation-duration: 3.5s;
+    animation-delay: 3s;
+}
+
+@keyframes meteor {
+    0% {
+        transform: rotate(-45deg) translateX(0);
+        opacity: 1;
+    }
+    
+    70% {
+        opacity: 1;
+    }
+    
+    100% {
+        transform: rotate(-45deg) translateX(-1000px);
+        opacity: 0;
+    }
+}
+
+/* Twinkle stars effect */
+.twinkle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     z-index: 1;
+}
+
+.twinkle span {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle infinite;
+}
+
+.twinkle span::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 3px #fff;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Generate 20 twinkling stars with different positions and animations */
+.twinkle span:nth-child(1) { left: 10%; top: 20%; animation-duration: 3s; }
+.twinkle span:nth-child(2) { left: 20%; top: 30%; animation-duration: 4s; }
+.twinkle span:nth-child(3) { left: 30%; top: 15%; animation-duration: 3.5s; }
+.twinkle span:nth-child(4) { left: 40%; top: 40%; animation-duration: 4.5s; }
+.twinkle span:nth-child(5) { left: 50%; top: 25%; animation-duration: 3.8s; }
+.twinkle span:nth-child(6) { left: 60%; top: 35%; animation-duration: 4.2s; }
+.twinkle span:nth-child(7) { left: 70%; top: 45%; animation-duration: 3.3s; }
+.twinkle span:nth-child(8) { left: 80%; top: 15%; animation-duration: 4.7s; }
+.twinkle span:nth-child(9) { left: 90%; top: 25%; animation-duration: 3.6s; }
+.twinkle span:nth-child(10) { left: 15%; top: 55%; animation-duration: 4.1s; }
+.twinkle span:nth-child(11) { left: 25%; top: 65%; animation-duration: 3.9s; }
+.twinkle span:nth-child(12) { left: 35%; top: 75%; animation-duration: 4.4s; }
+.twinkle span:nth-child(13) { left: 45%; top: 85%; animation-duration: 3.7s; }
+.twinkle span:nth-child(14) { left: 55%; top: 60%; animation-duration: 4.3s; }
+.twinkle span:nth-child(15) { left: 65%; top: 70%; animation-duration: 3.4s; }
+.twinkle span:nth-child(16) { left: 75%; top: 80%; animation-duration: 4.6s; }
+.twinkle span:nth-child(17) { left: 85%; top: 90%; animation-duration: 3.2s; }
+.twinkle span:nth-child(18) { left: 95%; top: 50%; animation-duration: 4.8s; }
+.twinkle span:nth-child(19) { left: 5%; top: 85%; animation-duration: 3.1s; }
+.twinkle span:nth-child(20) { left: 15%; top: 95%; animation-duration: 4.9s; }
+
+/* Shooting stars */
+.shooting-star {
+    display: none;
+}
+
+@keyframes stars {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-250px);
+    }
+}
+
+@keyframes nebulaGlow {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+}
+
+.hero .glitch {
+    position: relative;
+    z-index: 3;
+}
+
+.hero .subtitle {
+    position: relative;
+    z-index: 3;
 }
 
 .hero h1 {
@@ -203,10 +562,6 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
     .glitch {
         font-size: 2.5rem;
     }
@@ -741,4 +1096,9 @@ footer p {
 
 .submit-btn:hover i {
     transform: translateX(5px);
+}
+
+/* Hapus atau modifikasi hero-grid yang lama jika tidak dibutuhkan */
+.hero-grid {
+    opacity: 0.15;
 } 

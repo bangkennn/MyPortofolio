@@ -238,4 +238,27 @@ style.textContent = `
         background: #ff0000 !important;
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Navbar transparency control
+const navbar = document.querySelector('.navbar');
+const heroSection = document.querySelector('#home');
+
+function updateNavbar() {
+    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+    const scrollPosition = window.scrollY;
+
+    if (scrollPosition > heroBottom - 100) {
+        navbar.classList.add('navbar-visible');
+        navbar.classList.remove('navbar-transparent');
+    } else {
+        navbar.classList.add('navbar-transparent');
+        navbar.classList.remove('navbar-visible');
+    }
+}
+
+// Initial check
+updateNavbar();
+
+// Update on scroll
+window.addEventListener('scroll', updateNavbar); 
